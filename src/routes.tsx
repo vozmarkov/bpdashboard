@@ -1,13 +1,13 @@
 import React from 'react';
-import { Route, Routes } from './third-party';
-import { AppContainer, MainContainer, Overview } from './features/index';
+import { Route, Routes } from 'third-party';
+import { MainContainer, Overview, Upload } from 'features';
+import { getBasePath, getUploadPath } from 'constants/urls';
 
 export const routes = (
-  <AppContainer>
-    <MainContainer>
-      <Routes>
-        <Route path="/" element={<Overview />} />
-      </Routes>
-    </MainContainer>
-  </AppContainer>
+  <MainContainer>
+    <Routes>
+      <Route path={getUploadPath()} element={<Upload />} />
+      <Route path={getBasePath()} element={<Overview />} />
+    </Routes>
+  </MainContainer>
 );
