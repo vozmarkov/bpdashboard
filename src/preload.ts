@@ -1,5 +1,4 @@
-import { ipcRenderer, contextBridge } from 'electron';
+import { contextBridge } from "electron";
+import api from './api'
 
-contextBridge.exposeInMainWorld('api', {
-  upload: (files: any) => ipcRenderer.invoke('testing', files),
-});
+contextBridge.exposeInMainWorld("api", api);

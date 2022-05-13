@@ -14,6 +14,10 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "typeRoots": ["custom.d.ts"]
   },
-  "include": ["./src","webpack.main.config.js" ]
+  "include": ["./src","webpack.main.config.js" ],
+  "files": [
+    "src/custom.d.ts"
+  ]
 }
