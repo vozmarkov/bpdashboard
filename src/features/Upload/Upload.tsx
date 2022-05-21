@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { FileUploader } from 'third-party';
-
-const fileTypes = ['CSV'];
+import React, { useState } from 'react';
+import { FileLoader } from 'components';
+import { Box } from 'third-party';
+import { Reports } from 'types/common';
 
 export const Upload = () => {
   const [file, setFile] = useState<
     Array<{
       name: string;
       path: string;
-      rows: number;
+      rows: number | any;
     }>
   >([]);
 
-  const handleChange = async (file: any) => {
+  const handleUpload = async (file: any, type: Reports) => {
     if (!file) {
       return;
     }
@@ -27,28 +27,36 @@ export const Upload = () => {
 
     for (let index = 0; index < filesList.length; index++) {
       const file = filesList[index];
-      const results = await api.uploadEmbDeal(file.path);
-      console.log('await results::', results);
+      let results;
+      if (type === Reports.emb) {
+        results = await api.uploadEmbDeal(file.path);
+      } else if (type === Reports.AzOrdersShipment) {
+        results = await api.uploadAzOrdersShipment(file.path);
+      }
+      console.log('UPLOAD RESULTS:::', results);
       filesList[index].rows = results.length || 0;
     }
     setFile(filesList);
   };
-  console.log('state::', file);
+
+  // uploadAzOrdersShipment
   return (
-    <div>
-      <h1>Emb Report</h1>
-      <FileUploader
-        multiple
-        handleChange={handleChange}
-        name="file"
-        types={fileTypes}
-      />
-      {file &&
-        file.map((i) => (
-          <p key={i.name}>
-            {i.name} - total rows loaded: {i.rows}
-          </p>
-        ))}
-    </div>
+    <>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+        <FileLoader
+          name="Emb Report"
+          file={file}
+          handleChange={(file) => handleUpload(file, Reports.emb)}
+        />
+        <FileLoader
+          name="AZ Orders and shipments"
+          file={file}
+          handleChange={(file) => handleUpload(file, Reports.AzOrdersShipment)}
+        />
+        {/* <FileLoader name="AZ Items" file={file} handleChange={handleChange} /> */}
+        {/* <FileLoader name="AZ Refunds" file={file} handleChange={handleChange} />
+        <FileLoader name="AZ Returns" file={file} handleChange={handleChange} /> */}
+      </Box>
+    </>
   );
 };

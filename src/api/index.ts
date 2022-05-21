@@ -1,5 +1,6 @@
-import { uploadEmbDeal } from './upload';
+import { uploadEmbDeal, uploadAzOrdersShipment } from './upload';
 
 export default {
   uploadEmbDeal,
+  uploadAzOrdersShipment,
 };
